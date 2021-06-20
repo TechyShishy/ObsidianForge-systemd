@@ -3,3 +3,10 @@
 
 # Ignore Gradle build output directory
 build
+
+# Ignore minecraft-forge directories
+run
+mcmodsrepo
+
+# Ignore java compile directory
+bin
