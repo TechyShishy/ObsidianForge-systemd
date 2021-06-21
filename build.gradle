@@ -10,6 +10,7 @@ buildscript {
 
 plugins {
   id "com.zoltu.git-versioning" version "3.0.3"
+  id "com.geoffgranum.gradle-conventional-changelog" version "0.3.1"
 }
 ZoltuGitVersioning {
     customDescribeProcessor { describeResults ->
@@ -206,4 +207,10 @@ publishing {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
+}
+
+changelog {
+    file = project.file("CHANGELOG.md")
+    repoUrl = "https://github.com/TechyShishy/ObsidianForge-systemd"
+    trackerUrl = "https://github.com/TechyShishy/ObsidianForge-systemd"
 }
