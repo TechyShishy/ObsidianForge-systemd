@@ -18,6 +18,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import info.faljse.SDNotify.SDNotify;
+import com.sun.jna.Native;
+import com.sun.jna.Library;
+
+import static com.techyshishy.obsidianforge.systemd.config.Config.sendMainPid;
+
 
 @Mod("obsidianforge-systemd")
 public class ObsidianForgeSystemd {
@@ -51,7 +57,14 @@ public class ObsidianForgeSystemd {
         LOGGER.debug("Setting up server event handler");
         MinecraftForge.EVENT_BUS.register(new SystemdEventHandler());
 
+        if(sendMainPid) {
+            SDNotify.sendMainPID(CLibrary.INSTANCE.getpid());
+        }
         // Server only mod
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+    }
+    private interface CLibrary extends Library {
+        CLibrary INSTANCE = (CLibrary) Native.load("c", CLibrary.class);   
+        int getpid ();
     }
 }
