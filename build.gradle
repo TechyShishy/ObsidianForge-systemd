@@ -9,6 +9,7 @@ buildscript {
 }
 
 plugins {
+  id 'com.matthewprenger.cursegradle' version '1.4.0'
   id "com.zoltu.git-versioning" version "3.0.3"
   id "com.geoffgranum.gradle-conventional-changelog" version "0.3.1"
 }
@@ -140,6 +141,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     maven { url = 'https://files.minecraftforge.net/maven' }
     mavenCentral()
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
 }
 
 configurations {
@@ -213,4 +218,13 @@ changelog {
     file = project.file("CHANGELOG.md")
     repoUrl = "https://github.com/TechyShishy/ObsidianForge-systemd"
     trackerUrl = "https://github.com/TechyShishy/ObsidianForge-systemd"
+}
+
+curseforge {
+  apiKey = project.properties["curseForgeApiKey"]
+  project {
+    id = "496285"
+    changelog = file("CHANGELOG.md")
+    releaseType = versionInfo.tags ? versionInfo.tags : "alpha"
+  }
 }
