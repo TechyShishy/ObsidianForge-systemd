@@ -7,12 +7,34 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
     }
 }
+
+plugins {
+  id "com.zoltu.git-versioning" version "3.0.3"
+}
+ZoltuGitVersioning {
+    customDescribeProcessor { describeResults ->
+        def matcher = (describeResults =~ /v(?<major>[0-9]+?)\.(?<minor>[0-9]+?)\.(?<patch>[0-9]+?)(?:\-(?<tags>(?:alpha|beta|release)))?\-(?<commitCount>[0-9]+?)\-g(?<sha>[a-zA-Z0-9]+)/)
+        matcher.matches()
+        [
+            major: matcher.group('major'),
+            minor: matcher.group('minor'),
+            commitCount: matcher.group('commitCount'),
+            patch: matcher.group('patch'),
+            sha: matcher.group('sha'),
+            tags: matcher.group('tags')
+        ]
+    }
+    customVersionToString { versionInfo ->
+        "${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}"
+    }
+}
+def versionInfo = ZoltuGitVersioning.versionInfo
+
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0'
 group = 'com.techyshishy.obsidianforge' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'obsidianforge-systemd'
 
