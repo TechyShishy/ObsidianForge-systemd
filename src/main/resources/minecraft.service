@@ -1,0 +1,15 @@
+[Unit]
+Description=Minecraft server
+
+[Service]
+Restart=always
+Environment="MEMORY_MAX=512M"
+WorkingDirectory=/var/lib/minecraft/current
+User=minecraft
+Group=minecraft
+Type=notify
+ExecStart=/usr/bin/java -Xmx"${MEMORY_MAX}" -jar /var/lib/minecraft/current/minecraft-server.jar nogui
+TimeoutStartSec=5m
+
+[Install]
+WantedBy=multi-user.target
